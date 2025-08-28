@@ -126,6 +126,15 @@ class SQLiteDatabase {
       await this.runAsync(tableSQL);
     }
 
+    // Settings table for application-wide settings
+    await this.runAsync(
+      `CREATE TABLE IF NOT EXISTS app_settings (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`,
+    );
+
     // Create indexes
     const indexes = [
       `CREATE INDEX IF NOT EXISTS idx_products_category ON products(category)`,
@@ -698,6 +707,42 @@ class SQLiteDatabase {
   async cleanExpiredSessions(): Promise<void> {
     await this.runAsync(
       "DELETE FROM admin_sessions WHERE expires_at <= datetime('now')",
+    );
+  }
+
+  // Settings
+  async getAllSettings(): Promise<Record<string, any>> {
+    const rows = await this.allAsync(
+      "SELECT key, value FROM app_settings",
+    );
+    const out: Record<string, any> = {};
+    for (const row of rows) {
+      try {
+        out[row.key] = row.value ? JSON.parse(row.value) : null;
+      } catch {
+        out[row.key] = row.value;
+      }
+    }
+    return out;
+  }
+
+  async getSettings<T = any>(key: string): Promise<T | null> {
+    const row = await this.getAsync("SELECT value FROM app_settings WHERE key = ?", [key]);
+    if (!row) return null;
+    try {
+      return row.value ? (JSON.parse(row.value) as T) : (null as any);
+    } catch {
+      return row.value as T;
+    }
+  }
+
+  async updateSettings(key: string, value: any): Promise<void> {
+    const val = JSON.stringify(value);
+    await this.runAsync(
+      `INSERT INTO app_settings (key, value, updated_at)
+       VALUES (?, ?, CURRENT_TIMESTAMP)
+       ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=CURRENT_TIMESTAMP`,
+      [key, val],
     );
   }
 
