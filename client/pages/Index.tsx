@@ -272,7 +272,10 @@ export default function Index() {
                       <Heart className="w-4 h-4" />
                     </Button>
                     {/^https?:\/\//.test(product.image) ? (
-                      <AspectRatio ratio={1} className="rounded-xl overflow-hidden relative z-0">
+                      <AspectRatio
+                        ratio={1}
+                        className="rounded-xl overflow-hidden relative z-0"
+                      >
                         <img
                           src={product.image}
                           alt={product.name.en}
