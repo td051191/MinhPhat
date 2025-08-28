@@ -161,3 +161,22 @@ export interface AuthVerifyResponse {
     role: string;
   };
 }
+
+// Store settings types
+export interface StoreSettings {
+  storeName: { en: string; vi: string };
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  defaultLanguage: "en" | "vi";
+  enableVietnamese: boolean;
+  currencySymbol: string;
+  currencyCode: string;
+  darkMode: boolean;
+  primaryColor: string;
+  autoBackup: boolean;
+}
+
+export interface SettingsResponse {
+  settings: StoreSettings | null;
+}
