@@ -484,7 +484,9 @@ export default function AdminSettings() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Custom Methods</Label>
-                  <p className="text-sm text-muted-foreground">Add your own payment methods (e.g., ZaloPay, VNPay)</p>
+                  <p className="text-sm text-muted-foreground">
+                    Add your own payment methods (e.g., ZaloPay, VNPay)
+                  </p>
                 </div>
                 <Button
                   variant="outline"
@@ -522,8 +524,11 @@ export default function AdminSettings() {
                             ...s,
                             paymentMethods: {
                               ...s.paymentMethods,
-                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
-                                i === idx ? { ...x, enabled: Boolean(val) } : x,
+                              custom: (s.paymentMethods?.custom || []).map(
+                                (x, i) =>
+                                  i === idx
+                                    ? { ...x, enabled: Boolean(val) }
+                                    : x,
                               ),
                             },
                           }))
@@ -536,8 +541,11 @@ export default function AdminSettings() {
                             ...s,
                             paymentMethods: {
                               ...s.paymentMethods,
-                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
-                                i === idx ? { ...x, name: e.target.value } : x,
+                              custom: (s.paymentMethods?.custom || []).map(
+                                (x, i) =>
+                                  i === idx
+                                    ? { ...x, name: e.target.value }
+                                    : x,
                               ),
                             },
                           }))
@@ -552,7 +560,9 @@ export default function AdminSettings() {
                           ...s,
                           paymentMethods: {
                             ...s.paymentMethods,
-                            custom: (s.paymentMethods?.custom || []).filter((_, i) => i !== idx),
+                            custom: (s.paymentMethods?.custom || []).filter(
+                              (_, i) => i !== idx,
+                            ),
                           },
                         }))
                       }
@@ -570,8 +580,11 @@ export default function AdminSettings() {
                             ...s,
                             paymentMethods: {
                               ...s.paymentMethods,
-                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
-                                i === idx ? { ...x, instruction: e.target.value } : x,
+                              custom: (s.paymentMethods?.custom || []).map(
+                                (x, i) =>
+                                  i === idx
+                                    ? { ...x, instruction: e.target.value }
+                                    : x,
                               ),
                             },
                           }))
@@ -587,8 +600,11 @@ export default function AdminSettings() {
                             ...s,
                             paymentMethods: {
                               ...s.paymentMethods,
-                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
-                                i === idx ? { ...x, qrImageUrl: e.target.value } : x,
+                              custom: (s.paymentMethods?.custom || []).map(
+                                (x, i) =>
+                                  i === idx
+                                    ? { ...x, qrImageUrl: e.target.value }
+                                    : x,
                               ),
                             },
                           }))

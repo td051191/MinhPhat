@@ -131,7 +131,10 @@ export default function Checkout() {
                     {pm?.custom?.length > 0 &&
                       pm.custom.map((cm: any) =>
                         cm.enabled ? (
-                          <label key={cm.id} className="flex items-center gap-3 cursor-pointer">
+                          <label
+                            key={cm.id}
+                            className="flex items-center gap-3 cursor-pointer"
+                          >
                             <input
                               type="radio"
                               name="payment"
@@ -194,10 +197,16 @@ export default function Checkout() {
                         .map((c: any) => (
                           <div key={c.id} className="space-y-2">
                             {c.qrImageUrl && (
-                              <img src={c.qrImageUrl} alt={`${c.name} QR`} className="w-40 h-40 object-cover rounded" />
+                              <img
+                                src={c.qrImageUrl}
+                                alt={`${c.name} QR`}
+                                className="w-40 h-40 object-cover rounded"
+                              />
                             )}
                             {c.instruction && (
-                              <div className="text-muted-foreground">{c.instruction}</div>
+                              <div className="text-muted-foreground">
+                                {c.instruction}
+                              </div>
                             )}
                           </div>
                         ))}

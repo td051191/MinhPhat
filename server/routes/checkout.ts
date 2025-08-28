@@ -42,7 +42,8 @@ export const checkout: RequestHandler = async (req, res) => {
       : [];
     const methodAllowed =
       (paymentMethod === "cod" && pm.cod?.enabled !== false) ||
-      (paymentMethod === "bank_transfer" && pm.bankTransfer?.enabled === true) ||
+      (paymentMethod === "bank_transfer" &&
+        pm.bankTransfer?.enabled === true) ||
       (paymentMethod === "momo" && pm.momo?.enabled === true) ||
       customEnabledIds.includes(paymentMethod);
 
