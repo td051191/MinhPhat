@@ -175,6 +175,22 @@ export interface StoreSettings {
   darkMode: boolean;
   primaryColor: string;
   autoBackup: boolean;
+  paymentMethods?: {
+    cod?: { enabled: boolean };
+    bankTransfer?: {
+      enabled: boolean;
+      bankName?: string;
+      accountName?: string;
+      accountNumber?: string;
+      instruction?: string;
+    };
+    momo?: {
+      enabled: boolean;
+      phone?: string;
+      qrImageUrl?: string;
+      instruction?: string;
+    };
+  };
 }
 
 export interface SettingsResponse {
@@ -188,7 +204,7 @@ export interface CheckoutItem {
 
 export interface CheckoutRequest {
   items: CheckoutItem[];
-  paymentMethod: "cod";
+  paymentMethod: "cod" | "bank_transfer" | "momo";
   customer: {
     name: string;
     email?: string;
