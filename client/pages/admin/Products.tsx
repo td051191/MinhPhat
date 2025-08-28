@@ -163,7 +163,7 @@ export default function AdminProducts() {
                           <Star className="w-4 h-4 text-yellow-400 fill-current" />
                           <span>{product.rating}</span>
                           <span className="text-sm text-muted-foreground">
-                            ({product.reviews})
+                            ({product.reviewsCount})
                           </span>
                         </div>
                       </TableCell>
