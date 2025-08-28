@@ -109,36 +109,42 @@ export default function Checkout() {
                     onValueChange={(val) => setPaymentMethod(val)}
                   >
                     {pm?.cod?.enabled !== false && (
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem id="pm-cod" value="cod" />
-                        <Label htmlFor="pm-cod">Cash on Delivery</Label>
+                      <div
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() => setPaymentMethod("cod")}
+                      >
+                        <RadioGroupItem value="cod" />
+                        <span>Cash on Delivery</span>
                       </div>
                     )}
                     {pm?.bankTransfer?.enabled && (
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem id="pm-bank" value="bank_transfer" />
-                        <Label htmlFor="pm-bank">Bank Transfer</Label>
+                      <div
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() => setPaymentMethod("bank_transfer")}
+                      >
+                        <RadioGroupItem value="bank_transfer" />
+                        <span>Bank Transfer</span>
                       </div>
                     )}
                     {pm?.momo?.enabled && (
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem id="pm-momo" value="momo" />
-                        <Label htmlFor="pm-momo">Momo</Label>
+                      <div
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() => setPaymentMethod("momo")}
+                      >
+                        <RadioGroupItem value="momo" />
+                        <span>Momo</span>
                       </div>
                     )}
                     {Array.isArray(pm?.custom) &&
                       pm.custom.map((cm: any) =>
                         cm?.enabled ? (
-                          <div key={cm.id} className="flex items-center gap-3">
-                            <RadioGroupItem
-                              id={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}
-                              value={String(cm.id)}
-                            />
-                            <Label
-                              htmlFor={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}
-                            >
-                              {cm.name}
-                            </Label>
+                          <div
+                            key={cm.id}
+                            className="flex items-center gap-3 cursor-pointer"
+                            onClick={() => setPaymentMethod(String(cm.id))}
+                          >
+                            <RadioGroupItem value={String(cm.id)} />
+                            <span>{cm.name}</span>
                           </div>
                         ) : null,
                       )}
