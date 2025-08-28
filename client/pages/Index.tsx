@@ -152,9 +152,12 @@ export default function Index() {
                 <Button
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                  asChild
                 >
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  {language === "en" ? "Shop Now" : "Mua ngay"}
+                  <Link to="/cart">
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    {language === "en" ? "Shop Now" : "Mua ngay"}
+                  </Link>
                 </Button>
                 <Button variant="outline" size="lg">
                   {language === "en" ? "Learn More" : "Tìm hiểu thêm"}
@@ -390,7 +393,7 @@ export default function Index() {
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
             {language === "en"
               ? "Get weekly updates on seasonal fruits, exclusive offers, and healthy recipes delivered to your inbox"
-              : "Nhận cập nhật hàng tuần về trái cây theo mùa, ưu đãi độc quyền và công thức nấu ăn lành mạnh được gửi đến hộp thư của bạn"}
+              : "Nhận cập nhật hàng tuần về trái cây theo mùa, ưu đãi độc quyền và công thức nấu ăn lành mạnh được gửi đến hộp thư c��a bạn"}
           </p>
           <form
             onSubmit={handleNewsletterSubmit}
