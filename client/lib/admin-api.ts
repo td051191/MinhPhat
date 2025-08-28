@@ -257,3 +257,28 @@ export const adminExportApi = {
     return response.blob();
   },
 };
+
+// Admin Settings API
+export const adminSettingsApi = {
+  get: async () => {
+    const response = await fetch(`${API_BASE}/settings`, {
+      headers: { "x-admin": "true" },
+      credentials: "include",
+    });
+    if (!response.ok) throw new Error("Failed to load settings");
+    return response.json();
+  },
+  update: async (settings: import("@shared/database").StoreSettings) => {
+    const response = await fetch(`${API_BASE}/settings`, {
+      method: "PUT",
+      headers: adminHeaders,
+      credentials: "include",
+      body: JSON.stringify({ settings }),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to save settings");
+    }
+    return response.json();
+  },
+};
