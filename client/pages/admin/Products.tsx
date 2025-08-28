@@ -130,11 +130,9 @@ export default function AdminProducts() {
                             <div className="text-sm text-muted-foreground">
                               {product.name.vi}
                             </div>
-                            {product.badge && (
-                              <Badge
-                                className={`mt-1 ${product.badgeColor} text-white text-xs`}
-                              >
-                                {product.badge.en}
+                            {product.featured && (
+                              <Badge className="mt-1 bg-fresh-green text-white text-xs">
+                                Featured
                               </Badge>
                             )}
                           </div>
