@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useCart } from "@/hooks/useCart";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   productsApi,
   categoriesApi,
@@ -270,7 +271,18 @@ export default function Index() {
                     >
                       <Heart className="w-4 h-4" />
                     </Button>
-                    <div className="text-8xl mb-4">{product.image}</div>
+                    {/^https?:\/\//.test(product.image) ? (
+                      <AspectRatio ratio={1}>
+                        <img
+                          src={product.image}
+                          alt={product.name.en}
+                          className="w-full h-full object-cover rounded-xl"
+                          loading="lazy"
+                        />
+                      </AspectRatio>
+                    ) : (
+                      <div className="text-8xl mb-4">{product.image}</div>
+                    )}
                   </div>
 
                   <div className="p-6">
