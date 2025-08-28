@@ -180,3 +180,24 @@ export interface StoreSettings {
 export interface SettingsResponse {
   settings: StoreSettings | null;
 }
+
+export interface CheckoutItem {
+  id: string;
+  quantity: number;
+}
+
+export interface CheckoutRequest {
+  items: CheckoutItem[];
+  paymentMethod: "cod";
+  customer: {
+    name: string;
+    email?: string;
+    phone?: string;
+    address: string;
+  };
+}
+
+export interface CheckoutResponse {
+  orderId: string;
+  status: "pending" | "confirmed";
+}
