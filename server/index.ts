@@ -36,6 +36,7 @@ import {
 
 import { login, logout, verify, requireAuth } from "./routes/auth";
 import { exportData } from "./routes/export";
+import { getStoreSettings, updateStoreSettings } from "./routes/settings";
 
 export function createServer() {
   const app = express();
@@ -94,6 +95,10 @@ export function createServer() {
 
   // Export API
   app.get("/api/export", requireAuth, exportData);
+
+  // Settings API
+  app.get("/api/settings", requireAuth, getStoreSettings);
+  app.put("/api/settings", requireAuth, updateStoreSettings);
 
   return app;
 }
