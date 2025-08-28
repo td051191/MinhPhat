@@ -265,8 +265,9 @@ export const adminSettingsApi = {
       headers: { "x-admin": "true" },
       credentials: "include",
     });
-    if (!response.ok) throw new Error("Failed to load settings");
-    return response.json();
+    const text = await response.text();
+    if (!response.ok) throw new Error(text || "Failed to load settings");
+    return text ? JSON.parse(text) : {};
   },
   update: async (settings: import("@shared/database").StoreSettings) => {
     const response = await fetch(`${API_BASE}/settings`, {
@@ -275,10 +276,15 @@ export const adminSettingsApi = {
       credentials: "include",
       body: JSON.stringify({ settings }),
     });
+    const text = await response.text();
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Failed to save settings");
+      try {
+        const err = text ? JSON.parse(text) : {};
+        throw new Error(err.error || text || "Failed to save settings");
+      } catch {
+        throw new Error(text || "Failed to save settings");
+      }
     }
-    return response.json();
+    return text ? JSON.parse(text) : {};
   },
 };
