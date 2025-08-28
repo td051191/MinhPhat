@@ -6,7 +6,12 @@ export const checkout: RequestHandler = async (req, res) => {
     const { items, paymentMethod, customer } = req.body as {
       items: { id: string; quantity: number }[];
       paymentMethod: "cod";
-      customer: { name: string; email?: string; phone?: string; address: string };
+      customer: {
+        name: string;
+        email?: string;
+        phone?: string;
+        address: string;
+      };
     };
 
     if (!Array.isArray(items) || items.length === 0) {
@@ -19,14 +24,24 @@ export const checkout: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Unsupported payment method" });
     }
 
-    const products = await Promise.all(items.map((i) => db.getProductById(i.id)));
+    const products = await Promise.all(
+      items.map((i) => db.getProductById(i.id)),
+    );
     const missing = products.findIndex((p) => !p);
     if (missing !== -1) {
-      return res.status(400).json({ error: `Invalid product: ${items[missing].id}` });
+      return res
+        .status(400)
+        .json({ error: `Invalid product: ${items[missing].id}` });
     }
 
-    const computedItems = products.map((p, idx) => ({ product: p!, quantity: items[idx].quantity }));
-    const total = computedItems.reduce((sum, it) => sum + it.product.price * it.quantity, 0);
+    const computedItems = products.map((p, idx) => ({
+      product: p!,
+      quantity: items[idx].quantity,
+    }));
+    const total = computedItems.reduce(
+      (sum, it) => sum + it.product.price * it.quantity,
+      0,
+    );
 
     const order = await db.createOrder({
       status: "pending",

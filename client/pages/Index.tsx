@@ -215,7 +215,9 @@ export default function Index() {
               >
                 <CardContent className="p-6 text-center">
                   <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <span className="text-2xl">{category.name.en.charAt(0)}</span>
+                    <span className="text-2xl">
+                      {category.name.en.charAt(0)}
+                    </span>
                   </div>
                   <h3 className="font-semibold mb-1">{t(category.name)}</h3>
                   <p className="text-sm text-muted-foreground">
@@ -302,11 +304,15 @@ export default function Index() {
                         )}
                       </div>
                       <span className="text-sm text-muted-foreground">
-                        {product.weight || (language === "en" ? "per unit" : "mỗi đơn vị")}
+                        {product.weight ||
+                          (language === "en" ? "per unit" : "mỗi đơn vị")}
                       </span>
                     </div>
 
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => add(product, 1)}>
+                    <Button
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                      onClick={() => add(product, 1)}
+                    >
                       <Plus className="w-4 h-4 mr-2" />
                       {language === "en" ? "Add to Cart" : "Thêm vào giỏ"}
                     </Button>

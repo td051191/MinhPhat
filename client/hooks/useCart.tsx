@@ -48,7 +48,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existing = prev.find((i) => i.id === product.id);
       if (existing) {
         return prev.map((i) =>
-          i.id === product.id ? { ...i, quantity: Math.min(99, i.quantity + qty) } : i,
+          i.id === product.id
+            ? { ...i, quantity: Math.min(99, i.quantity + qty) }
+            : i,
         );
       }
       return [
@@ -65,15 +67,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const remove = (id: string) => setItems((prev) => prev.filter((i) => i.id !== id));
+  const remove = (id: string) =>
+    setItems((prev) => prev.filter((i) => i.id !== id));
   const update = (id: string, qty: number) =>
-    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity: Math.max(0, Math.min(99, qty)) } : i)).filter((i) => i.quantity > 0));
+    setItems((prev) =>
+      prev
+        .map((i) =>
+          i.id === id ? { ...i, quantity: Math.max(0, Math.min(99, qty)) } : i,
+        )
+        .filter((i) => i.quantity > 0),
+    );
   const clear = () => setItems([]);
 
-  const count = useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
-  const subtotal = useMemo(() => items.reduce((sum, i) => sum + i.price * i.quantity, 0), [items]);
+  const count = useMemo(
+    () => items.reduce((sum, i) => sum + i.quantity, 0),
+    [items],
+  );
+  const subtotal = useMemo(
+    () => items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+    [items],
+  );
 
-  const value: CartContextType = { items, count, subtotal, add, remove, update, clear };
+  const value: CartContextType = {
+    items,
+    count,
+    subtotal,
+    add,
+    remove,
+    update,
+    clear,
+  };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 

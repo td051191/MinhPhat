@@ -50,19 +50,31 @@ export default function Checkout() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label>Name</Label>
-                    <Input value={name} onChange={(e) => setName(e.target.value)} />
+                    <Input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label>Email</Label>
-                    <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Input
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label>Phone</Label>
-                    <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Input
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
                   </div>
                   <div className="md:col-span-2">
                     <Label>Address</Label>
-                    <Input value={address} onChange={(e) => setAddress(e.target.value)} />
+                    <Input
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -83,7 +95,9 @@ export default function Checkout() {
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-semibold">${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="text-sm text-muted-foreground">Delivery fee calculated at delivery.</div>
+                <div className="text-sm text-muted-foreground">
+                  Delivery fee calculated at delivery.
+                </div>
               </CardContent>
             </Card>
           </div>

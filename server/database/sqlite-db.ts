@@ -783,24 +783,50 @@ class SQLiteDatabase {
     email: string | null;
     phone: string | null;
     address: string;
-    items: { productId: string; name_en: string; name_vi: string; price: number; quantity: number }[];
+    items: {
+      productId: string;
+      name_en: string;
+      name_vi: string;
+      price: number;
+      quantity: number;
+    }[];
   }) {
     const orderId = this.generateId();
     await this.runAsync(
       `INSERT INTO orders (id, status, total_amount, currency, customer_name, email, phone, address)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [orderId, input.status, input.totalAmount, input.currency, input.customerName, input.email, input.phone, input.address],
+      [
+        orderId,
+        input.status,
+        input.totalAmount,
+        input.currency,
+        input.customerName,
+        input.email,
+        input.phone,
+        input.address,
+      ],
     );
 
     for (const it of input.items) {
       await this.runAsync(
         `INSERT INTO order_items (id, order_id, product_id, name_en, name_vi, price, quantity)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [this.generateId(), orderId, it.productId, it.name_en, it.name_vi, it.price, it.quantity],
+        [
+          this.generateId(),
+          orderId,
+          it.productId,
+          it.name_en,
+          it.name_vi,
+          it.price,
+          it.quantity,
+        ],
       );
     }
 
-    return { id: orderId, status: input.status } as { id: string; status: "pending" | "confirmed" };
+    return { id: orderId, status: input.status } as {
+      id: string;
+      status: "pending" | "confirmed";
+    };
   }
 
   // Export all data
