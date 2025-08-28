@@ -15,6 +15,7 @@ import {
 import { adminExportApi, adminSettingsApi } from "@/lib/admin-api";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import type { StoreSettings } from "@shared/database";
 
 const DEFAULT_SETTINGS: StoreSettings = {
@@ -46,6 +47,7 @@ const DEFAULT_SETTINGS: StoreSettings = {
 export default function AdminSettings() {
   const [isExporting, setIsExporting] = useState(false);
   const [settings, setSettings] = useState<StoreSettings>(DEFAULT_SETTINGS);
+  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-settings"],
@@ -57,8 +59,18 @@ export default function AdminSettings() {
   }, [data]);
 
   const saveMutation = useMutation({
-    mutationFn: async (payload: StoreSettings) =>
-      adminSettingsApi.update(payload),
+    mutationFn: async (payload: StoreSettings) => adminSettingsApi.update(payload),
+    onSuccess: () => {
+      alert("Settings saved successfully");
+    },
+    onError: (err: any) => {
+      const msg = err?.message || "Failed to save settings";
+      if (/Authentication required|Invalid admin request|Session expired/i.test(msg)) {
+        navigate("/admin/login");
+      } else {
+        alert(msg);
+      }
+    },
   });
 
   const handleExportData = async () => {
