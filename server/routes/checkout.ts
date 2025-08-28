@@ -59,6 +59,7 @@ export const checkout: RequestHandler = async (req, res) => {
       email: customer.email || null,
       phone: customer.phone || null,
       address: customer.address,
+      paymentMethod: paymentMethod,
       items: computedItems.map((it) => ({
         productId: it.product.id,
         name_en: it.product.name.en,
