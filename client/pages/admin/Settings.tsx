@@ -39,6 +39,7 @@ const DEFAULT_SETTINGS: StoreSettings = {
       instruction: "",
     },
     momo: { enabled: false, phone: "", qrImageUrl: "", instruction: "" },
+    custom: [],
   },
 };
 
@@ -476,6 +477,127 @@ export default function AdminSettings() {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* Custom Methods */}
+            <div className="rounded border p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Custom Methods</Label>
+                  <p className="text-sm text-muted-foreground">Add your own payment methods (e.g., ZaloPay, VNPay)</p>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setSettings((s) => ({
+                      ...s,
+                      paymentMethods: {
+                        ...s.paymentMethods,
+                        custom: [
+                          ...((s.paymentMethods?.custom as any[]) || []),
+                          {
+                            id: `pm_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+                            name: "New Method",
+                            enabled: true,
+                            instruction: "",
+                            qrImageUrl: "",
+                          },
+                        ],
+                      },
+                    }))
+                  }
+                >
+                  Add Method
+                </Button>
+              </div>
+
+              {(settings.paymentMethods?.custom || []).map((m, idx) => (
+                <div key={m.id} className="rounded-md border p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Switch
+                        checked={Boolean(m.enabled)}
+                        onCheckedChange={(val) =>
+                          setSettings((s) => ({
+                            ...s,
+                            paymentMethods: {
+                              ...s.paymentMethods,
+                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
+                                i === idx ? { ...x, enabled: Boolean(val) } : x,
+                              ),
+                            },
+                          }))
+                        }
+                      />
+                      <Input
+                        value={m.name}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            paymentMethods: {
+                              ...s.paymentMethods,
+                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
+                                i === idx ? { ...x, name: e.target.value } : x,
+                              ),
+                            },
+                          }))
+                        }
+                        className="w-56"
+                      />
+                    </div>
+                    <Button
+                      variant="ghost"
+                      onClick={() =>
+                        setSettings((s) => ({
+                          ...s,
+                          paymentMethods: {
+                            ...s.paymentMethods,
+                            custom: (s.paymentMethods?.custom || []).filter((_, i) => i !== idx),
+                          },
+                        }))
+                      }
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    <div>
+                      <Label>Instruction</Label>
+                      <Input
+                        value={m.instruction || ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            paymentMethods: {
+                              ...s.paymentMethods,
+                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
+                                i === idx ? { ...x, instruction: e.target.value } : x,
+                              ),
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label>QR/Image URL (optional)</Label>
+                      <Input
+                        value={m.qrImageUrl || ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            paymentMethods: {
+                              ...s.paymentMethods,
+                              custom: (s.paymentMethods?.custom || []).map((x, i) =>
+                                i === idx ? { ...x, qrImageUrl: e.target.value } : x,
+                              ),
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
