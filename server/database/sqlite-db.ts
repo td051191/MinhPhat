@@ -805,13 +805,14 @@ class SQLiteDatabase {
 
   // Export all data
   async exportAllData() {
-    const [products, categories, content, newsletters, settings] =
+    const [products, categories, content, newsletters, settings, orders] =
       await Promise.all([
         this.getAllProducts(),
         this.getAllCategories(),
         this.getAllContent(),
         this.getAllNewsletters(),
         this.getAllSettings(),
+        this.allAsync("SELECT * FROM orders"),
       ]);
 
     return {
@@ -820,6 +821,7 @@ class SQLiteDatabase {
       content,
       newsletters,
       settings,
+      orders,
       exportedAt: new Date().toISOString(),
       version: "1.0",
     };
