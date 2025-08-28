@@ -220,7 +220,7 @@ export interface CheckoutItem {
 
 export interface CheckoutRequest {
   items: CheckoutItem[];
-  paymentMethod: "cod" | "bank_transfer" | "momo";
+  paymentMethod: string;
   customer: {
     name: string;
     email?: string;
