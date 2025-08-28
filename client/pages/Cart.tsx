@@ -28,7 +28,16 @@ export default function Cart() {
               {items.map((item) => (
                 <Card key={item.id}>
                   <CardContent className="p-4 flex items-center gap-4">
-                    <div className="text-4xl">{item.image}</div>
+                    {/^https?:\/\//.test(item.image) ? (
+                      <img
+                        src={item.image}
+                        alt={item.name.en}
+                        className="w-16 h-16 rounded-lg object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="text-4xl">{item.image}</div>
+                    )}
                     <div className="flex-1">
                       <div className="font-semibold">{item.name.en}</div>
                       <div className="text-muted-foreground text-sm">
