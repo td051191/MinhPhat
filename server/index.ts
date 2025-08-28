@@ -36,7 +36,7 @@ import {
 
 import { login, logout, verify, requireAuth } from "./routes/auth";
 import { exportData } from "./routes/export";
-import { getStoreSettings, updateStoreSettings } from "./routes/settings";
+import { getStoreSettings, updateStoreSettings, getPublicSettings } from "./routes/settings";
 import { checkout } from "./routes/checkout";
 
 export function createServer() {
@@ -100,6 +100,7 @@ export function createServer() {
   // Settings API
   app.get("/api/settings", requireAuth, getStoreSettings);
   app.put("/api/settings", requireAuth, updateStoreSettings);
+  app.get("/api/public-settings", getPublicSettings);
 
   // Checkout API (public)
   app.post("/api/checkout", checkout);
