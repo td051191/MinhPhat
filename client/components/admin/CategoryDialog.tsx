@@ -51,13 +51,13 @@ export function CategoryDialog({
       setFormData({
         name_en: category.name.en,
         name_vi: category.name.vi,
-        description_en: category.description.en,
-        description_vi: category.description.vi,
-        emoji: category.emoji,
-        color: category.color,
+        description_en: category.description?.en || "",
+        description_vi: category.description?.vi || "",
+        emoji: "🍎",
+        color: "bg-fresh-green/10",
         slug: category.slug,
-        sortOrder: category.sortOrder.toString(),
-        isActive: category.isActive,
+        sortOrder: String(category.sortOrder ?? 0),
+        isActive: true,
       });
     } else {
       setFormData({
