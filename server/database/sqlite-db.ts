@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import {
   Product,
   Category,
@@ -644,10 +645,7 @@ class SQLiteDatabase {
     email: string,
   ): Promise<AdminUser> {
     const id = this.generateId();
-    const passwordHash = crypto
-      .createHash("md5")
-      .update(password)
-      .digest("hex");
+    const passwordHash = await bcrypt.hash(password, 10);
     const now = new Date().toISOString();
 
     await this.runAsync(
@@ -688,16 +686,32 @@ class SQLiteDatabase {
     username: string,
     password: string,
   ): Promise<AdminUser | null> {
-    const passwordHash = crypto
-      .createHash("md5")
-      .update(password)
-      .digest("hex");
     const row = await this.getAsync(
-      "SELECT * FROM admin_users WHERE username = ? AND password_hash = ?",
-      [username, passwordHash],
+      "SELECT * FROM admin_users WHERE username = ?",
+      [username],
     );
 
-    return row ? this.mapRowToAdminUser(row) : null;
+    if (!row) return null;
+    const stored: string = row.password_hash || "";
+
+    let ok = false;
+    if (stored && stored.startsWith("$2") && stored.length >= 50) {
+      ok = await bcrypt.compare(password, stored);
+    } else if (stored && stored.length === 32) {
+      const md5 = crypto.createHash("md5").update(password).digest("hex");
+      ok = md5 === stored;
+      if (ok) {
+        try {
+          const newHash = await bcrypt.hash(password, 10);
+          await this.runAsync(
+            "UPDATE admin_users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+            [newHash, row.id],
+          );
+        } catch {}
+      }
+    }
+
+    return ok ? this.mapRowToAdminUser(row) : null;
   }
 
   // Admin Sessions
