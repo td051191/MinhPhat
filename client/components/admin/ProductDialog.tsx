@@ -70,18 +70,30 @@ export function ProductDialog({
         originalPrice: product.originalPrice?.toString() || "",
         image: product.image,
         category: product.category,
-        badge_en: product.badge?.en || "",
-        badge_vi: product.badge?.vi || "",
-        badgeColor: product.badgeColor || "bg-fresh-green",
-        unit: product.unit,
-        origin: product.origin,
-        isOrganic: product.isOrganic,
-        isSeasonal: product.isSeasonal,
-        inStock: product.inStock,
-        calories: product.nutritionalInfo?.calories.toString() || "",
-        vitamin_c: product.nutritionalInfo?.vitamin_c.toString() || "",
-        fiber: product.nutritionalInfo?.fiber.toString() || "",
-        sugar: product.nutritionalInfo?.sugar.toString() || "",
+        badge_en: "",
+        badge_vi: "",
+        badgeColor: "bg-fresh-green",
+        unit: product.weight || "lb",
+        origin: product.origin || "",
+        isOrganic: product.organic ?? false,
+        isSeasonal: product.seasonal ?? false,
+        inStock: product.inStock ?? true,
+        calories:
+          product.nutrition && product.nutrition.calories != null
+            ? String(product.nutrition.calories)
+            : "",
+        vitamin_c:
+          product.nutrition && product.nutrition.vitamin_c != null
+            ? String(product.nutrition.vitamin_c)
+            : "",
+        fiber:
+          product.nutrition && product.nutrition.fiber != null
+            ? String(product.nutrition.fiber)
+            : "",
+        sugar:
+          product.nutrition && product.nutrition.sugar != null
+            ? String(product.nutrition.sugar)
+            : "",
       });
     } else {
       setFormData({
