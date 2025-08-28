@@ -260,23 +260,23 @@ export default function Index() {
                 <CardContent className="p-0">
                   <div className="relative p-6 text-center bg-gradient-to-br from-secondary/20 to-secondary/5">
                     {product.featured && (
-                      <Badge className="absolute top-3 left-3 bg-fresh-green text-white">
+                      <Badge className="absolute z-20 top-3 left-3 bg-fresh-green text-white">
                         Featured
                       </Badge>
                     )}
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background"
+                      className="absolute z-20 top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background"
                     >
                       <Heart className="w-4 h-4" />
                     </Button>
                     {/^https?:\/\//.test(product.image) ? (
-                      <AspectRatio ratio={1}>
+                      <AspectRatio ratio={1} className="rounded-xl overflow-hidden relative z-0">
                         <img
                           src={product.image}
                           alt={product.name.en}
-                          className="w-full h-full object-cover rounded-xl"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </AspectRatio>
