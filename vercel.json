@@ -17,8 +17,8 @@
   },
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/netlify/functions/api.ts"
+      "src": "/(.*)",
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
