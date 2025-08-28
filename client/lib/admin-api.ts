@@ -262,7 +262,6 @@ export const adminExportApi = {
 export const adminSettingsApi = {
   get: async () => {
     const response = await fetch(`${API_BASE}/settings`, {
-      headers: { "x-admin": "true" },
       credentials: "include",
     });
     if (!response.ok) {
