@@ -160,7 +160,8 @@ export const subscribeNewsletter: RequestHandler = async (req, res) => {
 
     // Validate email
     const emailStr = String(email || "").trim();
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr) && emailStr.length <= 254;
+    const emailOk =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr) && emailStr.length <= 254;
     if (!emailOk) {
       return res.status(400).json({ error: "Valid email is required" });
     }
@@ -175,7 +176,10 @@ export const subscribeNewsletter: RequestHandler = async (req, res) => {
 
     // Create subscription
     const safeName = name ? String(name).slice(0, 120) : undefined;
-    const subscription = await db.createNewsletterSubscription(emailStr, safeName);
+    const subscription = await db.createNewsletterSubscription(
+      emailStr,
+      safeName,
+    );
 
     res.status(201).json({
       message: "Successfully subscribed to newsletter",

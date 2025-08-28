@@ -17,14 +17,24 @@ export const checkout: RequestHandler = async (req, res) => {
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "No items in cart" });
     }
-    const safeName = String(customer?.name || "").trim().slice(0, 120);
-    const safeAddress = String(customer?.address || "").trim().slice(0, 300);
-    const safeEmail = customer?.email ? String(customer.email).trim().slice(0, 254) : undefined;
-    const safePhone = customer?.phone ? String(customer.phone).trim().slice(0, 40) : undefined;
+    const safeName = String(customer?.name || "")
+      .trim()
+      .slice(0, 120);
+    const safeAddress = String(customer?.address || "")
+      .trim()
+      .slice(0, 300);
+    const safeEmail = customer?.email
+      ? String(customer.email).trim().slice(0, 254)
+      : undefined;
+    const safePhone = customer?.phone
+      ? String(customer.phone).trim().slice(0, 40)
+      : undefined;
     if (!safeName || !safeAddress) {
       return res.status(400).json({ error: "Missing customer info" });
     }
-    items.forEach((i) => (i.quantity = Math.max(1, Math.min(99, Number(i.quantity) || 1))));
+    items.forEach(
+      (i) => (i.quantity = Math.max(1, Math.min(99, Number(i.quantity) || 1))),
+    );
     const settings = (await db.getSettings("store")) || {};
     const pm = settings.paymentMethods || {};
     const enabledMethods = {
