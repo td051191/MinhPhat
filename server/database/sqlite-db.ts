@@ -748,11 +748,12 @@ class SQLiteDatabase {
 
   // Export all data
   async exportAllData() {
-    const [products, categories, content, newsletters] = await Promise.all([
+    const [products, categories, content, newsletters, settings] = await Promise.all([
       this.getAllProducts(),
       this.getAllCategories(),
       this.getAllContent(),
       this.getAllNewsletters(),
+      this.getAllSettings(),
     ]);
 
     return {
@@ -760,6 +761,7 @@ class SQLiteDatabase {
       categories,
       content,
       newsletters,
+      settings,
       exportedAt: new Date().toISOString(),
       version: "1.0",
     };
