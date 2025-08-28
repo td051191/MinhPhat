@@ -1,4 +1,8 @@
-import type { CheckoutRequest, CheckoutResponse, PublicSettingsResponse } from "@shared/database";
+import type {
+  CheckoutRequest,
+  CheckoutResponse,
+  PublicSettingsResponse,
+} from "@shared/database";
 
 export const shopApi = {
   checkout: async (payload: CheckoutRequest): Promise<CheckoutResponse> => {

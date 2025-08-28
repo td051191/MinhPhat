@@ -15,7 +15,9 @@ export default function Checkout() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [isPlacing, setIsPlacing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank_transfer" | "momo">("cod");
+  const [paymentMethod, setPaymentMethod] = useState<
+    "cod" | "bank_transfer" | "momo"
+  >("cod");
 
   const { data: publicSettings } = useQuery({
     queryKey: ["public-settings"],
@@ -128,25 +130,44 @@ export default function Checkout() {
                     )}
                   </div>
 
-                  {paymentMethod === "bank_transfer" && pm?.bankTransfer?.enabled && (
-                    <div className="mt-3 rounded border p-3 text-sm">
-                      <div><strong>Bank:</strong> {pm.bankTransfer.bankName}</div>
-                      <div><strong>Account Name:</strong> {pm.bankTransfer.accountName}</div>
-                      <div><strong>Account Number:</strong> {pm.bankTransfer.accountNumber}</div>
-                      {pm.bankTransfer.instruction && (
-                        <div className="mt-2 text-muted-foreground">{pm.bankTransfer.instruction}</div>
-                      )}
-                    </div>
-                  )}
+                  {paymentMethod === "bank_transfer" &&
+                    pm?.bankTransfer?.enabled && (
+                      <div className="mt-3 rounded border p-3 text-sm">
+                        <div>
+                          <strong>Bank:</strong> {pm.bankTransfer.bankName}
+                        </div>
+                        <div>
+                          <strong>Account Name:</strong>{" "}
+                          {pm.bankTransfer.accountName}
+                        </div>
+                        <div>
+                          <strong>Account Number:</strong>{" "}
+                          {pm.bankTransfer.accountNumber}
+                        </div>
+                        {pm.bankTransfer.instruction && (
+                          <div className="mt-2 text-muted-foreground">
+                            {pm.bankTransfer.instruction}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                   {paymentMethod === "momo" && pm?.momo?.enabled && (
                     <div className="mt-3 rounded border p-3 text-sm">
-                      <div><strong>Phone:</strong> {pm.momo.phone}</div>
+                      <div>
+                        <strong>Phone:</strong> {pm.momo.phone}
+                      </div>
                       {pm.momo.qrImageUrl && (
-                        <img src={pm.momo.qrImageUrl} alt="Momo QR" className="mt-2 w-40 h-40 object-cover rounded" />
+                        <img
+                          src={pm.momo.qrImageUrl}
+                          alt="Momo QR"
+                          className="mt-2 w-40 h-40 object-cover rounded"
+                        />
                       )}
                       {pm.momo.instruction && (
-                        <div className="mt-2 text-muted-foreground">{pm.momo.instruction}</div>
+                        <div className="mt-2 text-muted-foreground">
+                          {pm.momo.instruction}
+                        </div>
                       )}
                     </div>
                   )}

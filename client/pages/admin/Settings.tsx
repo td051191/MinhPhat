@@ -246,7 +246,9 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Cash on Delivery</Label>
-                <p className="text-sm text-muted-foreground">Allow customers to pay cash upon delivery</p>
+                <p className="text-sm text-muted-foreground">
+                  Allow customers to pay cash upon delivery
+                </p>
               </div>
               <Switch
                 checked={settings.paymentMethods?.cod?.enabled !== false}
@@ -269,16 +271,23 @@ export default function AdminSettings() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Bank Transfer</Label>
-                  <p className="text-sm text-muted-foreground">Show bank details for manual transfer</p>
+                  <p className="text-sm text-muted-foreground">
+                    Show bank details for manual transfer
+                  </p>
                 </div>
                 <Switch
-                  checked={Boolean(settings.paymentMethods?.bankTransfer?.enabled)}
+                  checked={Boolean(
+                    settings.paymentMethods?.bankTransfer?.enabled,
+                  )}
                   onCheckedChange={(val) =>
                     setSettings((s) => ({
                       ...s,
                       paymentMethods: {
                         ...s.paymentMethods,
-                        bankTransfer: { ...s.paymentMethods?.bankTransfer, enabled: Boolean(val) },
+                        bankTransfer: {
+                          ...s.paymentMethods?.bankTransfer,
+                          enabled: Boolean(val),
+                        },
                         cod: s.paymentMethods?.cod,
                         momo: s.paymentMethods?.momo,
                       },
@@ -290,13 +299,18 @@ export default function AdminSettings() {
                 <div>
                   <Label>Bank Name</Label>
                   <Input
-                    value={settings.paymentMethods?.bankTransfer?.bankName || ""}
+                    value={
+                      settings.paymentMethods?.bankTransfer?.bankName || ""
+                    }
                     onChange={(e) =>
                       setSettings((s) => ({
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          bankTransfer: { ...s.paymentMethods?.bankTransfer, bankName: e.target.value },
+                          bankTransfer: {
+                            ...s.paymentMethods?.bankTransfer,
+                            bankName: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           momo: s.paymentMethods?.momo,
                         },
@@ -307,13 +321,18 @@ export default function AdminSettings() {
                 <div>
                   <Label>Account Name</Label>
                   <Input
-                    value={settings.paymentMethods?.bankTransfer?.accountName || ""}
+                    value={
+                      settings.paymentMethods?.bankTransfer?.accountName || ""
+                    }
                     onChange={(e) =>
                       setSettings((s) => ({
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          bankTransfer: { ...s.paymentMethods?.bankTransfer, accountName: e.target.value },
+                          bankTransfer: {
+                            ...s.paymentMethods?.bankTransfer,
+                            accountName: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           momo: s.paymentMethods?.momo,
                         },
@@ -324,13 +343,18 @@ export default function AdminSettings() {
                 <div>
                   <Label>Account Number</Label>
                   <Input
-                    value={settings.paymentMethods?.bankTransfer?.accountNumber || ""}
+                    value={
+                      settings.paymentMethods?.bankTransfer?.accountNumber || ""
+                    }
                     onChange={(e) =>
                       setSettings((s) => ({
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          bankTransfer: { ...s.paymentMethods?.bankTransfer, accountNumber: e.target.value },
+                          bankTransfer: {
+                            ...s.paymentMethods?.bankTransfer,
+                            accountNumber: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           momo: s.paymentMethods?.momo,
                         },
@@ -342,13 +366,18 @@ export default function AdminSettings() {
               <div>
                 <Label>Instruction</Label>
                 <Input
-                  value={settings.paymentMethods?.bankTransfer?.instruction || ""}
+                  value={
+                    settings.paymentMethods?.bankTransfer?.instruction || ""
+                  }
                   onChange={(e) =>
                     setSettings((s) => ({
                       ...s,
                       paymentMethods: {
                         ...s.paymentMethods,
-                        bankTransfer: { ...s.paymentMethods?.bankTransfer, instruction: e.target.value },
+                        bankTransfer: {
+                          ...s.paymentMethods?.bankTransfer,
+                          instruction: e.target.value,
+                        },
                         cod: s.paymentMethods?.cod,
                         momo: s.paymentMethods?.momo,
                       },
@@ -363,7 +392,9 @@ export default function AdminSettings() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Momo</Label>
-                  <p className="text-sm text-muted-foreground">Enable Momo wallet payment</p>
+                  <p className="text-sm text-muted-foreground">
+                    Enable Momo wallet payment
+                  </p>
                 </div>
                 <Switch
                   checked={Boolean(settings.paymentMethods?.momo?.enabled)}
@@ -372,7 +403,10 @@ export default function AdminSettings() {
                       ...s,
                       paymentMethods: {
                         ...s.paymentMethods,
-                        momo: { ...s.paymentMethods?.momo, enabled: Boolean(val) },
+                        momo: {
+                          ...s.paymentMethods?.momo,
+                          enabled: Boolean(val),
+                        },
                         cod: s.paymentMethods?.cod,
                         bankTransfer: s.paymentMethods?.bankTransfer,
                       },
@@ -390,7 +424,10 @@ export default function AdminSettings() {
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          momo: { ...s.paymentMethods?.momo, phone: e.target.value },
+                          momo: {
+                            ...s.paymentMethods?.momo,
+                            phone: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           bankTransfer: s.paymentMethods?.bankTransfer,
                         },
@@ -407,7 +444,10 @@ export default function AdminSettings() {
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          momo: { ...s.paymentMethods?.momo, qrImageUrl: e.target.value },
+                          momo: {
+                            ...s.paymentMethods?.momo,
+                            qrImageUrl: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           bankTransfer: s.paymentMethods?.bankTransfer,
                         },
@@ -424,7 +464,10 @@ export default function AdminSettings() {
                         ...s,
                         paymentMethods: {
                           ...s.paymentMethods,
-                          momo: { ...s.paymentMethods?.momo, instruction: e.target.value },
+                          momo: {
+                            ...s.paymentMethods?.momo,
+                            instruction: e.target.value,
+                          },
                           cod: s.paymentMethods?.cod,
                           bankTransfer: s.paymentMethods?.bankTransfer,
                         },

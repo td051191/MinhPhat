@@ -36,7 +36,11 @@ import {
 
 import { login, logout, verify, requireAuth } from "./routes/auth";
 import { exportData } from "./routes/export";
-import { getStoreSettings, updateStoreSettings, getPublicSettings } from "./routes/settings";
+import {
+  getStoreSettings,
+  updateStoreSettings,
+  getPublicSettings,
+} from "./routes/settings";
 import { checkout } from "./routes/checkout";
 
 export function createServer() {
