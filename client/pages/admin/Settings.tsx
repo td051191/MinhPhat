@@ -29,6 +29,17 @@ const DEFAULT_SETTINGS: StoreSettings = {
   darkMode: false,
   primaryColor: "#16a34a",
   autoBackup: true,
+  paymentMethods: {
+    cod: { enabled: true },
+    bankTransfer: {
+      enabled: false,
+      bankName: "",
+      accountName: "",
+      accountNumber: "",
+      instruction: "",
+    },
+    momo: { enabled: false, phone: "", qrImageUrl: "", instruction: "" },
+  },
 };
 
 export default function AdminSettings() {
@@ -217,6 +228,210 @@ export default function AdminSettings() {
                     setSettings((s) => ({ ...s, currencyCode: e.target.value }))
                   }
                 />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Payments */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="w-5 h-5" />
+              Payment Methods
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* COD */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Cash on Delivery</Label>
+                <p className="text-sm text-muted-foreground">Allow customers to pay cash upon delivery</p>
+              </div>
+              <Switch
+                checked={settings.paymentMethods?.cod?.enabled !== false}
+                onCheckedChange={(val) =>
+                  setSettings((s) => ({
+                    ...s,
+                    paymentMethods: {
+                      ...s.paymentMethods,
+                      cod: { enabled: Boolean(val) },
+                      bankTransfer: s.paymentMethods?.bankTransfer,
+                      momo: s.paymentMethods?.momo,
+                    },
+                  }))
+                }
+              />
+            </div>
+
+            {/* Bank Transfer */}
+            <div className="rounded border p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Bank Transfer</Label>
+                  <p className="text-sm text-muted-foreground">Show bank details for manual transfer</p>
+                </div>
+                <Switch
+                  checked={Boolean(settings.paymentMethods?.bankTransfer?.enabled)}
+                  onCheckedChange={(val) =>
+                    setSettings((s) => ({
+                      ...s,
+                      paymentMethods: {
+                        ...s.paymentMethods,
+                        bankTransfer: { ...s.paymentMethods?.bankTransfer, enabled: Boolean(val) },
+                        cod: s.paymentMethods?.cod,
+                        momo: s.paymentMethods?.momo,
+                      },
+                    }))
+                  }
+                />
+              </div>
+              <div className="grid md:grid-cols-3 gap-3">
+                <div>
+                  <Label>Bank Name</Label>
+                  <Input
+                    value={settings.paymentMethods?.bankTransfer?.bankName || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          bankTransfer: { ...s.paymentMethods?.bankTransfer, bankName: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          momo: s.paymentMethods?.momo,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>Account Name</Label>
+                  <Input
+                    value={settings.paymentMethods?.bankTransfer?.accountName || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          bankTransfer: { ...s.paymentMethods?.bankTransfer, accountName: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          momo: s.paymentMethods?.momo,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>Account Number</Label>
+                  <Input
+                    value={settings.paymentMethods?.bankTransfer?.accountNumber || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          bankTransfer: { ...s.paymentMethods?.bankTransfer, accountNumber: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          momo: s.paymentMethods?.momo,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <Label>Instruction</Label>
+                <Input
+                  value={settings.paymentMethods?.bankTransfer?.instruction || ""}
+                  onChange={(e) =>
+                    setSettings((s) => ({
+                      ...s,
+                      paymentMethods: {
+                        ...s.paymentMethods,
+                        bankTransfer: { ...s.paymentMethods?.bankTransfer, instruction: e.target.value },
+                        cod: s.paymentMethods?.cod,
+                        momo: s.paymentMethods?.momo,
+                      },
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Momo */}
+            <div className="rounded border p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Momo</Label>
+                  <p className="text-sm text-muted-foreground">Enable Momo wallet payment</p>
+                </div>
+                <Switch
+                  checked={Boolean(settings.paymentMethods?.momo?.enabled)}
+                  onCheckedChange={(val) =>
+                    setSettings((s) => ({
+                      ...s,
+                      paymentMethods: {
+                        ...s.paymentMethods,
+                        momo: { ...s.paymentMethods?.momo, enabled: Boolean(val) },
+                        cod: s.paymentMethods?.cod,
+                        bankTransfer: s.paymentMethods?.bankTransfer,
+                      },
+                    }))
+                  }
+                />
+              </div>
+              <div className="grid md:grid-cols-3 gap-3">
+                <div>
+                  <Label>Momo Phone</Label>
+                  <Input
+                    value={settings.paymentMethods?.momo?.phone || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          momo: { ...s.paymentMethods?.momo, phone: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          bankTransfer: s.paymentMethods?.bankTransfer,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>QR Image URL</Label>
+                  <Input
+                    value={settings.paymentMethods?.momo?.qrImageUrl || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          momo: { ...s.paymentMethods?.momo, qrImageUrl: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          bankTransfer: s.paymentMethods?.bankTransfer,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>Instruction</Label>
+                  <Input
+                    value={settings.paymentMethods?.momo?.instruction || ""}
+                    onChange={(e) =>
+                      setSettings((s) => ({
+                        ...s,
+                        paymentMethods: {
+                          ...s.paymentMethods,
+                          momo: { ...s.paymentMethods?.momo, instruction: e.target.value },
+                          cod: s.paymentMethods?.cod,
+                          bankTransfer: s.paymentMethods?.bankTransfer,
+                        },
+                      }))
+                    }
+                  />
+                </div>
               </div>
             </div>
           </CardContent>
