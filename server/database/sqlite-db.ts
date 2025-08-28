@@ -146,9 +146,13 @@ class SQLiteDatabase {
           email TEXT,
           phone TEXT,
           address TEXT NOT NULL,
+          payment_method TEXT,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`,
     );
+    try {
+      await this.runAsync(`ALTER TABLE orders ADD COLUMN payment_method TEXT`);
+    } catch {}
     await this.runAsync(
       `CREATE TABLE IF NOT EXISTS order_items (
           id TEXT PRIMARY KEY,
@@ -783,6 +787,7 @@ class SQLiteDatabase {
     email: string | null;
     phone: string | null;
     address: string;
+    paymentMethod?: string;
     items: {
       productId: string;
       name_en: string;
@@ -793,8 +798,8 @@ class SQLiteDatabase {
   }) {
     const orderId = this.generateId();
     await this.runAsync(
-      `INSERT INTO orders (id, status, total_amount, currency, customer_name, email, phone, address)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO orders (id, status, total_amount, currency, customer_name, email, phone, address, payment_method)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         orderId,
         input.status,
@@ -804,6 +809,7 @@ class SQLiteDatabase {
         input.email,
         input.phone,
         input.address,
+        input.paymentMethod || null,
       ],
     );
 
