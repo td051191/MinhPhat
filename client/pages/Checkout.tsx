@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
 import { shopApi } from "@/lib/shop-api";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Checkout() {
   const { items, subtotal, clear } = useCart();
@@ -14,6 +15,14 @@ export default function Checkout() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [isPlacing, setIsPlacing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank_transfer" | "momo">("cod");
+
+  const { data: publicSettings } = useQuery({
+    queryKey: ["public-settings"],
+    queryFn: () => shopApi.getPublicSettings(),
+  });
+
+  const pm = publicSettings?.settings?.paymentMethods || {};
 
   const placeOrder = async () => {
     if (items.length === 0) return alert("Cart is empty");
@@ -22,7 +31,7 @@ export default function Checkout() {
       setIsPlacing(true);
       const res = await shopApi.checkout({
         items: items.map((i) => ({ id: i.id, quantity: i.quantity })),
-        paymentMethod: "cod",
+        paymentMethod,
         customer: { name, email, phone, address },
       });
       clear();
@@ -80,7 +89,67 @@ export default function Checkout() {
 
                 <div>
                   <Label>Payment Method</Label>
-                  <div className="mt-2">Cash on Delivery</div>
+                  <div className="mt-3 space-y-2">
+                    {pm?.cod?.enabled !== false && (
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="cod"
+                          checked={paymentMethod === "cod"}
+                          onChange={() => setPaymentMethod("cod")}
+                        />
+                        <span>Cash on Delivery</span>
+                      </label>
+                    )}
+                    {pm?.bankTransfer?.enabled && (
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="bank_transfer"
+                          checked={paymentMethod === "bank_transfer"}
+                          onChange={() => setPaymentMethod("bank_transfer")}
+                        />
+                        <span>Bank Transfer</span>
+                      </label>
+                    )}
+                    {pm?.momo?.enabled && (
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="momo"
+                          checked={paymentMethod === "momo"}
+                          onChange={() => setPaymentMethod("momo")}
+                        />
+                        <span>Momo</span>
+                      </label>
+                    )}
+                  </div>
+
+                  {paymentMethod === "bank_transfer" && pm?.bankTransfer?.enabled && (
+                    <div className="mt-3 rounded border p-3 text-sm">
+                      <div><strong>Bank:</strong> {pm.bankTransfer.bankName}</div>
+                      <div><strong>Account Name:</strong> {pm.bankTransfer.accountName}</div>
+                      <div><strong>Account Number:</strong> {pm.bankTransfer.accountNumber}</div>
+                      {pm.bankTransfer.instruction && (
+                        <div className="mt-2 text-muted-foreground">{pm.bankTransfer.instruction}</div>
+                      )}
+                    </div>
+                  )}
+
+                  {paymentMethod === "momo" && pm?.momo?.enabled && (
+                    <div className="mt-3 rounded border p-3 text-sm">
+                      <div><strong>Phone:</strong> {pm.momo.phone}</div>
+                      {pm.momo.qrImageUrl && (
+                        <img src={pm.momo.qrImageUrl} alt="Momo QR" className="mt-2 w-40 h-40 object-cover rounded" />
+                      )}
+                      {pm.momo.instruction && (
+                        <div className="mt-2 text-muted-foreground">{pm.momo.instruction}</div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <Button onClick={placeOrder} disabled={isPlacing}>
