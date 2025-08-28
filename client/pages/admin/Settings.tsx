@@ -59,13 +59,18 @@ export default function AdminSettings() {
   }, [data]);
 
   const saveMutation = useMutation({
-    mutationFn: async (payload: StoreSettings) => adminSettingsApi.update(payload),
+    mutationFn: async (payload: StoreSettings) =>
+      adminSettingsApi.update(payload),
     onSuccess: () => {
       alert("Settings saved successfully");
     },
     onError: (err: any) => {
       const msg = err?.message || "Failed to save settings";
-      if (/Authentication required|Invalid admin request|Session expired/i.test(msg)) {
+      if (
+        /Authentication required|Invalid admin request|Session expired/i.test(
+          msg,
+        )
+      ) {
         navigate("/admin/login");
       } else {
         alert(msg);
