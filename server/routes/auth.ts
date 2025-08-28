@@ -25,9 +25,9 @@ export const login: RequestHandler = async (req, res) => {
     // Set HTTP-only cookie
     res.cookie("admin_session", session.id, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      secure: true,
+      sameSite: "none",
+      maxAge: 15 * 60 * 1000,
     });
 
     res.json({
@@ -56,8 +56,8 @@ export const logout: RequestHandler = async (req, res) => {
       await db.deleteAdminSession(sessionId);
     }
 
-    // Clear cookie
-    res.clearCookie("admin_session");
+    // Clear cookie (match attributes)
+    res.clearCookie("admin_session", { sameSite: "none", secure: true });
 
     res.json({ message: "Logout successful" });
   } catch (error) {
