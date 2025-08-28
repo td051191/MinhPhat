@@ -134,7 +134,9 @@ export default function Checkout() {
                               id={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}
                               value={String(cm.id)}
                             />
-                            <Label htmlFor={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}>
+                            <Label
+                              htmlFor={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}
+                            >
                               {cm.name}
                             </Label>
                           </div>
