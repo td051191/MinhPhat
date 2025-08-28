@@ -209,10 +209,8 @@ export default function Index() {
                 className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0"
               >
                 <CardContent className="p-6 text-center">
-                  <div
-                    className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}
-                  >
-                    <span className="text-2xl">{category.emoji}</span>
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <span className="text-2xl">{category.name.en.charAt(0)}</span>
                   </div>
                   <h3 className="font-semibold mb-1">{t(category.name)}</h3>
                   <p className="text-sm text-muted-foreground">
@@ -253,11 +251,9 @@ export default function Index() {
               >
                 <CardContent className="p-0">
                   <div className="relative p-6 text-center bg-gradient-to-br from-secondary/20 to-secondary/5">
-                    {product.badge && (
-                      <Badge
-                        className={`absolute top-3 left-3 ${product.badgeColor} text-white`}
-                      >
-                        {t(product.badge)}
+                    {product.featured && (
+                      <Badge className="absolute top-3 left-3 bg-fresh-green text-white">
+                        Featured
                       </Badge>
                     )}
                     <Button
@@ -285,7 +281,7 @@ export default function Index() {
                         ))}
                       </div>
                       <span className="text-sm text-muted-foreground">
-                        ({product.reviews})
+                        ({product.reviewsCount})
                       </span>
                     </div>
 
@@ -301,13 +297,11 @@ export default function Index() {
                         )}
                       </div>
                       <span className="text-sm text-muted-foreground">
-                        {language === "en"
-                          ? `per ${product.unit}`
-                          : `mỗi ${product.unit}`}
+                        {product.weight || (language === "en" ? "per unit" : "mỗi đơn vị")}
                       </span>
                     </div>
 
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => alert('Added to cart is enabled soon')}>
                       <Plus className="w-4 h-4 mr-2" />
                       {language === "en" ? "Add to Cart" : "Thêm vào giỏ"}
                     </Button>
