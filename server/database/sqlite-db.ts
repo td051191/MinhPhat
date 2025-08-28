@@ -135,6 +135,33 @@ class SQLiteDatabase {
       )`,
     );
 
+    // Orders tables
+    await this.runAsync(
+      `CREATE TABLE IF NOT EXISTS orders (
+          id TEXT PRIMARY KEY,
+          status TEXT NOT NULL,
+          total_amount REAL NOT NULL,
+          currency TEXT NOT NULL,
+          customer_name TEXT NOT NULL,
+          email TEXT,
+          phone TEXT,
+          address TEXT NOT NULL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`,
+    );
+    await this.runAsync(
+      `CREATE TABLE IF NOT EXISTS order_items (
+          id TEXT PRIMARY KEY,
+          order_id TEXT NOT NULL,
+          product_id TEXT NOT NULL,
+          name_en TEXT NOT NULL,
+          name_vi TEXT NOT NULL,
+          price REAL NOT NULL,
+          quantity INTEGER NOT NULL,
+          FOREIGN KEY(order_id) REFERENCES orders(id)
+      )`,
+    );
+
     // Create indexes
     const indexes = [
       `CREATE INDEX IF NOT EXISTS idx_products_category ON products(category)`,
@@ -745,6 +772,35 @@ class SQLiteDatabase {
        ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=CURRENT_TIMESTAMP`,
       [key, val],
     );
+  }
+
+  // Orders
+  async createOrder(input: {
+    status: "pending" | "confirmed";
+    totalAmount: number;
+    currency: string;
+    customerName: string;
+    email: string | null;
+    phone: string | null;
+    address: string;
+    items: { productId: string; name_en: string; name_vi: string; price: number; quantity: number }[];
+  }) {
+    const orderId = this.generateId();
+    await this.runAsync(
+      `INSERT INTO orders (id, status, total_amount, currency, customer_name, email, phone, address)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [orderId, input.status, input.totalAmount, input.currency, input.customerName, input.email, input.phone, input.address],
+    );
+
+    for (const it of input.items) {
+      await this.runAsync(
+        `INSERT INTO order_items (id, order_id, product_id, name_en, name_vi, price, quantity)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [this.generateId(), orderId, it.productId, it.name_en, it.name_vi, it.price, it.quantity],
+      );
+    }
+
+    return { id: orderId, status: input.status } as { id: string; status: "pending" | "confirmed" };
   }
 
   // Export all data
