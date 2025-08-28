@@ -107,10 +107,8 @@ export default function AdminCategories() {
                     <TableRow key={category.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <div
-                            className={`w-10 h-10 ${category.color} rounded-full flex items-center justify-center`}
-                          >
-                            <span className="text-lg">{category.emoji}</span>
+                          <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                            <span className="text-lg">{category.name.en.charAt(0)}</span>
                           </div>
                           <div>
                             <div className="font-medium">
@@ -134,11 +132,7 @@ export default function AdminCategories() {
                       </TableCell>
                       <TableCell>{category.sortOrder}</TableCell>
                       <TableCell>
-                        <Badge
-                          variant={category.isActive ? "default" : "secondary"}
-                        >
-                          {category.isActive ? "Active" : "Inactive"}
-                        </Badge>
+                        <Badge variant="secondary">Active</Badge>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
