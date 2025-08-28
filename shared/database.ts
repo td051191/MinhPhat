@@ -190,6 +190,14 @@ export interface StoreSettings {
       qrImageUrl?: string;
       instruction?: string;
     };
+    custom?: Array<{
+      id: string;
+      name: string;
+      enabled: boolean;
+      instruction?: string;
+      qrImageUrl?: string;
+      details?: string;
+    }>;
   };
 }
 
