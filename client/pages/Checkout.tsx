@@ -128,6 +128,21 @@ export default function Checkout() {
                         <span>Momo</span>
                       </label>
                     )}
+                    {pm?.custom?.length > 0 &&
+                      pm.custom.map((cm: any) =>
+                        cm.enabled ? (
+                          <label key={cm.id} className="flex items-center gap-3 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="payment"
+                              value={cm.id}
+                              checked={paymentMethod === cm.id}
+                              onChange={() => setPaymentMethod(cm.id)}
+                            />
+                            <span>{cm.name}</span>
+                          </label>
+                        ) : null,
+                      )}
                   </div>
 
                   {paymentMethod === "bank_transfer" &&
@@ -169,6 +184,23 @@ export default function Checkout() {
                           {pm.momo.instruction}
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {pm?.custom?.some((c: any) => c.id === paymentMethod) && (
+                    <div className="mt-3 rounded border p-3 text-sm">
+                      {pm.custom
+                        .filter((c: any) => c.id === paymentMethod)
+                        .map((c: any) => (
+                          <div key={c.id} className="space-y-2">
+                            {c.qrImageUrl && (
+                              <img src={c.qrImageUrl} alt={`${c.name} QR`} className="w-40 h-40 object-cover rounded" />
+                            )}
+                            {c.instruction && (
+                              <div className="text-muted-foreground">{c.instruction}</div>
+                            )}
+                          </div>
+                        ))}
                     </div>
                   )}
                 </div>
