@@ -12,6 +12,24 @@ export const getStoreSettings: RequestHandler = async (_req, res) => {
   }
 };
 
+// Public settings subset for checkout (no auth)
+export const getPublicSettings: RequestHandler = async (_req, res) => {
+  try {
+    const settings = (await db.getSettings("store")) || null;
+    const publicSettings = settings
+      ? {
+          currencySymbol: settings.currencySymbol,
+          currencyCode: settings.currencyCode,
+          paymentMethods: settings.paymentMethods || {},
+        }
+      : null;
+    res.json({ settings: publicSettings });
+  } catch (error) {
+    console.error("Error fetching public settings:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // PUT /api/settings - Update store settings (admin only)
 export const updateStoreSettings: RequestHandler = async (req, res) => {
   try {
