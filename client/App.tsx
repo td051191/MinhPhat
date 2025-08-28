@@ -10,6 +10,7 @@ import { LanguageProvider } from "@/hooks/useLanguage";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { CartProvider } from "@/hooks/useCart";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Fruits from "./pages/Fruits";
@@ -17,6 +18,8 @@ import Vegetables from "./pages/Vegetables";
 import Organic from "./pages/Organic";
 import Seasonal from "./pages/Seasonal";
 import Bundles from "./pages/Bundles";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 // Admin pages
 import AdminLogin from "./pages/admin/Login";
@@ -34,6 +37,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <LanguageProvider>
+          <CartProvider>
           <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -45,6 +49,8 @@ const App = () => (
                 <Route path="/organic" element={<Organic />} />
                 <Route path="/seasonal" element={<Seasonal />} />
                 <Route path="/bundles" element={<Bundles />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
 
                 {/* Admin Login (unprotected) */}
                 <Route path="/admin/login" element={<AdminLogin />} />
@@ -104,6 +110,7 @@ const App = () => (
               </Routes>
             </BrowserRouter>
           </TooltipProvider>
+          </CartProvider>
         </LanguageProvider>
       </AuthProvider>
     </QueryClientProvider>
