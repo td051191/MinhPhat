@@ -37,13 +37,16 @@ export const checkout: RequestHandler = async (req, res) => {
     );
     const settings = (await db.getSettings("store")) || {};
     const pm = settings.paymentMethods || {};
-    const enabledMethods = {
-      cod: pm.cod?.enabled !== false,
-      bank_transfer: pm.bankTransfer?.enabled === true,
-      momo: pm.momo?.enabled === true,
-    } as const;
+    const customEnabledIds: string[] = Array.isArray(pm.custom)
+      ? pm.custom.filter((c: any) => c?.enabled).map((c: any) => String(c.id))
+      : [];
+    const methodAllowed =
+      (paymentMethod === "cod" && pm.cod?.enabled !== false) ||
+      (paymentMethod === "bank_transfer" && pm.bankTransfer?.enabled === true) ||
+      (paymentMethod === "momo" && pm.momo?.enabled === true) ||
+      customEnabledIds.includes(paymentMethod);
 
-    if (!enabledMethods[paymentMethod]) {
+    if (!methodAllowed) {
       return res.status(400).json({ error: "Unsupported payment method" });
     }
 
