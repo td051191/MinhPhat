@@ -5,7 +5,7 @@ export const checkout: RequestHandler = async (req, res) => {
   try {
     const { items, paymentMethod, customer } = req.body as {
       items: { id: string; quantity: number }[];
-      paymentMethod: "cod";
+      paymentMethod: "cod" | "bank_transfer" | "momo";
       customer: {
         name: string;
         email?: string;
@@ -20,7 +20,15 @@ export const checkout: RequestHandler = async (req, res) => {
     if (!customer?.name || !customer?.address) {
       return res.status(400).json({ error: "Missing customer info" });
     }
-    if (paymentMethod !== "cod") {
+    const settings = (await db.getSettings("store")) || {};
+    const pm = settings.paymentMethods || {};
+    const enabledMethods = {
+      cod: pm.cod?.enabled !== false,
+      bank_transfer: pm.bankTransfer?.enabled === true,
+      momo: pm.momo?.enabled === true,
+    } as const;
+
+    if (!enabledMethods[paymentMethod]) {
       return res.status(400).json({ error: "Unsupported payment method" });
     }
 
