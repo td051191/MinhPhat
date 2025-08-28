@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import { handleDemo } from "./routes/demo";
 
@@ -46,16 +48,24 @@ import { checkout } from "./routes/checkout";
 export function createServer() {
   const app = express();
 
-  // Middleware
+  // Security headers
+  app.use(helmet());
+
+  // CORS: restrict in production
+  const corsOrigin = process.env.CORS_ORIGIN || true;
   app.use(
     cors({
-      origin: true,
+      origin: corsOrigin,
       credentials: true,
     }),
   );
   app.use(cookieParser());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: "1mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+
+  // Basic rate limiting for auth and checkout
+  const loginLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 20 });
+  const checkoutLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 100 });
 
   // Legacy API routes
   app.get("/api/ping", (_req, res) => {
@@ -94,7 +104,7 @@ export function createServer() {
   app.post("/api/newsletter/subscribe", subscribeNewsletter);
 
   // Authentication API
-  app.post("/api/auth/login", login);
+  app.post("/api/auth/login", loginLimiter, login);
   app.post("/api/auth/logout", logout);
   app.get("/api/auth/verify", verify);
 
@@ -107,7 +117,7 @@ export function createServer() {
   app.get("/api/public-settings", getPublicSettings);
 
   // Checkout API (public)
-  app.post("/api/checkout", checkout);
+  app.post("/api/checkout", checkoutLimiter, checkout);
 
   return app;
 }
