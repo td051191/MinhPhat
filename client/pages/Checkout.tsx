@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/useCart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { shopApi } from "@/lib/shop-api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,9 +15,7 @@ export default function Checkout() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [isPlacing, setIsPlacing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<
-    "cod" | "bank_transfer" | "momo"
-  >("cod");
+  const [paymentMethod, setPaymentMethod] = useState<string>("cod");
 
   const { data: publicSettings } = useQuery({
     queryKey: ["public-settings"],
@@ -25,6 +23,19 @@ export default function Checkout() {
   });
 
   const pm = publicSettings?.settings?.paymentMethods || {};
+
+  useEffect(() => {
+    const enabled: string[] = [];
+    if (pm?.cod?.enabled !== false) enabled.push("cod");
+    if (pm?.bankTransfer?.enabled) enabled.push("bank_transfer");
+    if (pm?.momo?.enabled) enabled.push("momo");
+    if (Array.isArray(pm?.custom)) {
+      for (const c of pm.custom) if (c?.enabled) enabled.push(String(c.id));
+    }
+    if (enabled.length > 0 && !enabled.includes(paymentMethod)) {
+      setPaymentMethod(enabled[0]);
+    }
+  }, [publicSettings]);
 
   const placeOrder = async () => {
     if (items.length === 0) return alert("Cart is empty");
