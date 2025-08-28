@@ -40,9 +40,9 @@ export default function AdminDashboard() {
     },
     {
       title: "Featured Products",
-      value: productsData?.products?.filter((p) => p.badge).length || 0,
+      value: productsData?.products?.filter((p) => p.featured).length || 0,
       icon: TrendingUp,
-      description: "Products with badges",
+      description: "Marked as featured",
     },
     {
       title: "In Stock",
