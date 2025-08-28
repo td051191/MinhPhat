@@ -37,6 +37,7 @@ import {
 import { login, logout, verify, requireAuth } from "./routes/auth";
 import { exportData } from "./routes/export";
 import { getStoreSettings, updateStoreSettings } from "./routes/settings";
+import { checkout } from "./routes/checkout";
 
 export function createServer() {
   const app = express();
@@ -99,6 +100,9 @@ export function createServer() {
   // Settings API
   app.get("/api/settings", requireAuth, getStoreSettings);
   app.put("/api/settings", requireAuth, updateStoreSettings);
+
+  // Checkout API (public)
+  app.post("/api/checkout", checkout);
 
   return app;
 }
