@@ -37,7 +37,7 @@ export function ContentDialog({
     key: "",
     value_en: "",
     value_vi: "",
-    type: "text" as "text" | "html" | "markdown",
+    type: "text" as "text" | "html" | "markdown" | "json",
     section: "",
   });
 
