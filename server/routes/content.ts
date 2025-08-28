@@ -159,20 +159,23 @@ export const subscribeNewsletter: RequestHandler = async (req, res) => {
     const { email, name } = req.body;
 
     // Validate email
-    if (!email || !email.includes("@")) {
+    const emailStr = String(email || "").trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr) && emailStr.length <= 254;
+    if (!emailOk) {
       return res.status(400).json({ error: "Valid email is required" });
     }
 
     // Check if already subscribed
     const newsletters = await db.getAllNewsletters();
-    const existingSubscription = newsletters.find((n) => n.email === email);
+    const existingSubscription = newsletters.find((n) => n.email === emailStr);
 
     if (existingSubscription) {
       return res.status(400).json({ error: "Email already subscribed" });
     }
 
     // Create subscription
-    const subscription = await db.createNewsletterSubscription(email, name);
+    const safeName = name ? String(name).slice(0, 120) : undefined;
+    const subscription = await db.createNewsletterSubscription(emailStr, safeName);
 
     res.status(201).json({
       message: "Successfully subscribed to newsletter",
