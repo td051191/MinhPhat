@@ -197,6 +197,14 @@ export interface SettingsResponse {
   settings: StoreSettings | null;
 }
 
+export interface PublicSettingsResponse {
+  settings: {
+    currencySymbol: string;
+    currencyCode: string;
+    paymentMethods?: StoreSettings["paymentMethods"];
+  } | null;
+}
+
 export interface CheckoutItem {
   id: string;
   quantity: number;
