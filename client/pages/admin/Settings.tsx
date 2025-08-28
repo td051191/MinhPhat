@@ -45,7 +45,8 @@ export default function AdminSettings() {
   }, [data]);
 
   const saveMutation = useMutation({
-    mutationFn: async (payload: StoreSettings) => adminSettingsApi.update(payload),
+    mutationFn: async (payload: StoreSettings) =>
+      adminSettingsApi.update(payload),
   });
 
   const handleExportData = async () => {
@@ -74,7 +75,9 @@ export default function AdminSettings() {
       <div className="space-y-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-          <p className="text-muted-foreground">Configure your Minh Phát store settings</p>
+          <p className="text-muted-foreground">
+            Configure your Minh Phát store settings
+          </p>
         </div>
 
         {/* General Settings */}
@@ -92,7 +95,10 @@ export default function AdminSettings() {
                 <Input
                   value={settings.storeName.en}
                   onChange={(e) =>
-                    setSettings((s) => ({ ...s, storeName: { ...s.storeName, en: e.target.value } }))
+                    setSettings((s) => ({
+                      ...s,
+                      storeName: { ...s.storeName, en: e.target.value },
+                    }))
                   }
                 />
               </div>
@@ -101,7 +107,10 @@ export default function AdminSettings() {
                 <Input
                   value={settings.storeName.vi}
                   onChange={(e) =>
-                    setSettings((s) => ({ ...s, storeName: { ...s.storeName, vi: e.target.value } }))
+                    setSettings((s) => ({
+                      ...s,
+                      storeName: { ...s.storeName, vi: e.target.value },
+                    }))
                   }
                 />
               </div>
@@ -112,14 +121,18 @@ export default function AdminSettings() {
                 <Label>Contact Email</Label>
                 <Input
                   value={settings.contactEmail}
-                  onChange={(e) => setSettings((s) => ({ ...s, contactEmail: e.target.value }))}
+                  onChange={(e) =>
+                    setSettings((s) => ({ ...s, contactEmail: e.target.value }))
+                  }
                 />
               </div>
               <div>
                 <Label>Contact Phone</Label>
                 <Input
                   value={settings.contactPhone}
-                  onChange={(e) => setSettings((s) => ({ ...s, contactPhone: e.target.value }))}
+                  onChange={(e) =>
+                    setSettings((s) => ({ ...s, contactPhone: e.target.value }))
+                  }
                 />
               </div>
             </div>
@@ -128,7 +141,9 @@ export default function AdminSettings() {
               <Label>Store Address</Label>
               <Input
                 value={settings.address}
-                onChange={(e) => setSettings((s) => ({ ...s, address: e.target.value }))}
+                onChange={(e) =>
+                  setSettings((s) => ({ ...s, address: e.target.value }))
+                }
               />
             </div>
           </CardContent>
@@ -146,13 +161,19 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Default Language</Label>
-                <p className="text-sm text-muted-foreground">The primary language for your store</p>
+                <p className="text-sm text-muted-foreground">
+                  The primary language for your store
+                </p>
               </div>
               <select
                 className="border rounded px-3 py-2"
                 value={settings.defaultLanguage}
                 onChange={(e) =>
-                  setSettings((s) => ({ ...s, defaultLanguage: e.target.value as StoreSettings["defaultLanguage"] }))
+                  setSettings((s) => ({
+                    ...s,
+                    defaultLanguage: e.target
+                      .value as StoreSettings["defaultLanguage"],
+                  }))
                 }
               >
                 <option value="en">English</option>
@@ -163,11 +184,15 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Enable Vietnamese</Label>
-                <p className="text-sm text-muted-foreground">Allow customers to switch to Vietnamese</p>
+                <p className="text-sm text-muted-foreground">
+                  Allow customers to switch to Vietnamese
+                </p>
               </div>
               <Switch
                 checked={settings.enableVietnamese}
-                onCheckedChange={(val) => setSettings((s) => ({ ...s, enableVietnamese: Boolean(val) }))}
+                onCheckedChange={(val) =>
+                  setSettings((s) => ({ ...s, enableVietnamese: Boolean(val) }))
+                }
               />
             </div>
 
@@ -176,14 +201,21 @@ export default function AdminSettings() {
                 <Label>Currency Symbol</Label>
                 <Input
                   value={settings.currencySymbol}
-                  onChange={(e) => setSettings((s) => ({ ...s, currencySymbol: e.target.value }))}
+                  onChange={(e) =>
+                    setSettings((s) => ({
+                      ...s,
+                      currencySymbol: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div>
                 <Label>Currency Code</Label>
                 <Input
                   value={settings.currencyCode}
-                  onChange={(e) => setSettings((s) => ({ ...s, currencyCode: e.target.value }))}
+                  onChange={(e) =>
+                    setSettings((s) => ({ ...s, currencyCode: e.target.value }))
+                  }
                 />
               </div>
             </div>
@@ -202,24 +234,35 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Dark Mode</Label>
-                <p className="text-sm text-muted-foreground">Enable dark theme for admin panel</p>
+                <p className="text-sm text-muted-foreground">
+                  Enable dark theme for admin panel
+                </p>
               </div>
               <Switch
                 checked={settings.darkMode}
-                onCheckedChange={(val) => setSettings((s) => ({ ...s, darkMode: Boolean(val) }))}
+                onCheckedChange={(val) =>
+                  setSettings((s) => ({ ...s, darkMode: Boolean(val) }))
+                }
               />
             </div>
 
             <div>
               <Label>Primary Brand Color</Label>
               <div className="flex items-center gap-2 mt-2">
-                <div className="w-8 h-8 rounded border" style={{ backgroundColor: settings.primaryColor }}></div>
+                <div
+                  className="w-8 h-8 rounded border"
+                  style={{ backgroundColor: settings.primaryColor }}
+                ></div>
                 <Input
                   value={settings.primaryColor}
-                  onChange={(e) => setSettings((s) => ({ ...s, primaryColor: e.target.value }))}
+                  onChange={(e) =>
+                    setSettings((s) => ({ ...s, primaryColor: e.target.value }))
+                  }
                   className="w-32"
                 />
-                <span className="text-sm text-muted-foreground">Fresh Green</span>
+                <span className="text-sm text-muted-foreground">
+                  Fresh Green
+                </span>
               </div>
             </div>
           </CardContent>
@@ -237,23 +280,36 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Database Type</Label>
-                <p className="text-sm text-muted-foreground">Currently using SQLite file-based database</p>
+                <p className="text-sm text-muted-foreground">
+                  Currently using SQLite file-based database
+                </p>
               </div>
-              <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">SQLite</span>
+              <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">
+                SQLite
+              </span>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
                 <Label>Auto Backup</Label>
-                <p className="text-sm text-muted-foreground">Automatically backup data daily</p>
+                <p className="text-sm text-muted-foreground">
+                  Automatically backup data daily
+                </p>
               </div>
               <Switch
                 checked={settings.autoBackup}
-                onCheckedChange={(val) => setSettings((s) => ({ ...s, autoBackup: Boolean(val) }))}
+                onCheckedChange={(val) =>
+                  setSettings((s) => ({ ...s, autoBackup: Boolean(val) }))
+                }
               />
             </div>
 
-            <Button variant="outline" className="w-full" onClick={handleExportData} disabled={isExporting}>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={handleExportData}
+              disabled={isExporting}
+            >
               {isExporting ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-fresh-green mr-2"></div>
@@ -281,7 +337,9 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Admin Authentication</Label>
-                <p className="text-sm text-muted-foreground">Require login for admin panel</p>
+                <p className="text-sm text-muted-foreground">
+                  Require login for admin panel
+                </p>
               </div>
               <Switch />
             </div>
@@ -289,7 +347,9 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>API Rate Limiting</Label>
-                <p className="text-sm text-muted-foreground">Limit API requests per minute</p>
+                <p className="text-sm text-muted-foreground">
+                  Limit API requests per minute
+                </p>
               </div>
               <Switch defaultChecked />
             </div>
@@ -303,7 +363,10 @@ export default function AdminSettings() {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <Button onClick={() => saveMutation.mutate(settings)} disabled={saveMutation.isPending || isLoading}>
+          <Button
+            onClick={() => saveMutation.mutate(settings)}
+            disabled={saveMutation.isPending || isLoading}
+          >
             {saveMutation.isPending ? "Saving..." : "Save All Settings"}
           </Button>
         </div>

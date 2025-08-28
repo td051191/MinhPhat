@@ -712,9 +712,7 @@ class SQLiteDatabase {
 
   // Settings
   async getAllSettings(): Promise<Record<string, any>> {
-    const rows = await this.allAsync(
-      "SELECT key, value FROM app_settings",
-    );
+    const rows = await this.allAsync("SELECT key, value FROM app_settings");
     const out: Record<string, any> = {};
     for (const row of rows) {
       try {
@@ -727,7 +725,10 @@ class SQLiteDatabase {
   }
 
   async getSettings<T = any>(key: string): Promise<T | null> {
-    const row = await this.getAsync("SELECT value FROM app_settings WHERE key = ?", [key]);
+    const row = await this.getAsync(
+      "SELECT value FROM app_settings WHERE key = ?",
+      [key],
+    );
     if (!row) return null;
     try {
       return row.value ? (JSON.parse(row.value) as T) : (null as any);
@@ -748,13 +749,14 @@ class SQLiteDatabase {
 
   // Export all data
   async exportAllData() {
-    const [products, categories, content, newsletters, settings] = await Promise.all([
-      this.getAllProducts(),
-      this.getAllCategories(),
-      this.getAllContent(),
-      this.getAllNewsletters(),
-      this.getAllSettings(),
-    ]);
+    const [products, categories, content, newsletters, settings] =
+      await Promise.all([
+        this.getAllProducts(),
+        this.getAllCategories(),
+        this.getAllContent(),
+        this.getAllNewsletters(),
+        this.getAllSettings(),
+      ]);
 
     return {
       products,
