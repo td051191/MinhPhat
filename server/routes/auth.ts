@@ -121,7 +121,14 @@ export const requireAuth: RequestHandler = async (req, res, next) => {
       return res.status(401).json({ error: "Session expired" });
     }
 
-    // Session is valid, continue
+    // For mutating requests, enforce admin header as lightweight CSRF guard
+    if (req.method !== "GET") {
+      const adminHeader = req.headers["x-admin"];
+      if (adminHeader !== "true") {
+        return res.status(403).json({ error: "Invalid admin request" });
+      }
+    }
+
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);
