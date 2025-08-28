@@ -102,62 +102,44 @@ export default function Checkout() {
 
                 <div>
                   <Label>Payment Method</Label>
-                  <div className="mt-3 space-y-2">
+                  <RadioGroup
+                    className="mt-3 space-y-2"
+                    value={paymentMethod}
+                    onValueChange={(val) => setPaymentMethod(val)}
+                  >
                     {pm?.cod?.enabled !== false && (
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="cod"
-                          checked={paymentMethod === "cod"}
-                          onChange={() => setPaymentMethod("cod")}
-                        />
-                        <span>Cash on Delivery</span>
-                      </label>
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem id="pm-cod" value="cod" />
+                        <Label htmlFor="pm-cod">Cash on Delivery</Label>
+                      </div>
                     )}
                     {pm?.bankTransfer?.enabled && (
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="bank_transfer"
-                          checked={paymentMethod === "bank_transfer"}
-                          onChange={() => setPaymentMethod("bank_transfer")}
-                        />
-                        <span>Bank Transfer</span>
-                      </label>
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem id="pm-bank" value="bank_transfer" />
+                        <Label htmlFor="pm-bank">Bank Transfer</Label>
+                      </div>
                     )}
                     {pm?.momo?.enabled && (
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="momo"
-                          checked={paymentMethod === "momo"}
-                          onChange={() => setPaymentMethod("momo")}
-                        />
-                        <span>Momo</span>
-                      </label>
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem id="pm-momo" value="momo" />
+                        <Label htmlFor="pm-momo">Momo</Label>
+                      </div>
                     )}
-                    {pm?.custom?.length > 0 &&
+                    {Array.isArray(pm?.custom) &&
                       pm.custom.map((cm: any) =>
-                        cm.enabled ? (
-                          <label
-                            key={cm.id}
-                            className="flex items-center gap-3 cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              name="payment"
-                              value={cm.id}
-                              checked={paymentMethod === cm.id}
-                              onChange={() => setPaymentMethod(cm.id)}
+                        cm?.enabled ? (
+                          <div key={cm.id} className="flex items-center gap-3">
+                            <RadioGroupItem
+                              id={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}
+                              value={String(cm.id)}
                             />
-                            <span>{cm.name}</span>
-                          </label>
+                            <Label htmlFor={`pm-custom-${String(cm.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`}>
+                              {cm.name}
+                            </Label>
+                          </div>
                         ) : null,
                       )}
-                  </div>
+                  </RadioGroup>
 
                   {paymentMethod === "bank_transfer" &&
                     pm?.bankTransfer?.enabled && (
