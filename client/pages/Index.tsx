@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useCart } from "@/hooks/useCart";
 import {
   productsApi,
   categoriesApi,
@@ -27,6 +28,7 @@ import {
 
 export default function Index() {
   const { language, t } = useLanguage();
+  const { add } = useCart();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
 
@@ -301,7 +303,7 @@ export default function Index() {
                       </span>
                     </div>
 
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => alert('Added to cart is enabled soon')}>
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => add(product, 1)}>
                       <Plus className="w-4 h-4 mr-2" />
                       {language === "en" ? "Add to Cart" : "Thêm vào giỏ"}
                     </Button>
