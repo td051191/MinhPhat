@@ -5,7 +5,7 @@ export const checkout: RequestHandler = async (req, res) => {
   try {
     const { items, paymentMethod, customer } = req.body as {
       items: { id: string; quantity: number }[];
-      paymentMethod: "cod" | "bank_transfer" | "momo";
+      paymentMethod: string;
       customer: {
         name: string;
         email?: string;
